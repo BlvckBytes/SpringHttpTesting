@@ -82,8 +82,12 @@ open class JsonObjectExtractor(
         continue
       }
 
-      if (currentNode == null)
-        throw AssertionError("Path part $pathPart could not be resolved, because it's predecessor was null ($path)")
+      if (currentNode == null) {
+        if (!allowNull)
+          throw AssertionError("Path part $pathPart could not be resolved, because it's predecessor was null ($path)")
+
+        return null
+      }
 
       throw IllegalStateException("Don't know how to access a node of type ${currentNode.javaClass.simpleName}")
     }
